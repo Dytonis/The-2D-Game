@@ -1,0 +1,20 @@
+ITEM_ID:
+{
+	Null Unassinged/Blank
+}
+TILE_ID:
+{
+	Null Unassigned
+	0 StoneFloor
+	1 StoneWall
+	2 Hole
+	3 Door
+}
+COLLIDER_TYPE:
+{
+	Null Unassigned
+	0 No Colliders
+	1 All Colliders
+	2 Player Colliders
+	3 Item Colliders
+}
