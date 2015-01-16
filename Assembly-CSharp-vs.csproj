@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{E6C862B2-3926-B5EE-3045-60F09E4257A5}</ProjectGuid>
+	<ProjectGuid>{4B34B8B3-8A34-9DE0-BC1D-0FADDAAA369E}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -48,7 +48,9 @@
   <ItemGroup>
      <Compile Include="Assets\Engine\AI\StandardEnemyAI.cs" />
      <Compile Include="Assets\Engine\IO\Input.cs" />
+     <Compile Include="Assets\Engine\Level\LevelPerformanceBal.cs" />
      <Compile Include="Assets\Engine\Level\LevelPlacer.cs" />
+     <Compile Include="Assets\Engine\Level\Room.cs" />
      <Compile Include="Assets\Engine\Level\Tile.cs" />
      <Compile Include="Assets\Engine\Movement\CollisionMesh.cs" />
      <Compile Include="Assets\Engine\Movement\EntityMovement.cs" />

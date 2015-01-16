@@ -14,7 +14,6 @@ COLLIDER_TYPE:
 {
 	Null Unassigned
 	0 No Colliders
-	1 All Colliders
-	2 Player Colliders
-	3 Item Colliders
+	1 Solid
+	2 Half-Collider
 }

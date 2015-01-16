@@ -12,9 +12,28 @@ public class EntityMovement : MonoBehaviour
 
 	private float cutoffSpeed = 0.05f;
 
+	private delegate bool Comparator(int x, int y);
+	private Comparator equalTo = delegate(int x, int y) { return x == y; };
+	private Comparator notEqualTo = delegate(int x, int y) { return x != y; };
+
+	public enum CollisionTypes
+	{
+		CollideWithAllColliders,
+		CollideWithSolidColliders,
+		CollideWithHalfColliders,
+		CollideWithNothing
+	}
+	public CollisionTypes CollisionType;
+
+	public void Start()
+	{
+
+	}
+
 	public void Update()
 	{
-		checkCollision();
+		if(CollisionType != CollisionTypes.CollideWithNothing)
+			checkCollision();
 
 		gameObject.transform.Translate(velx*Time.deltaTime, vely*Time.deltaTime, 0);
 
@@ -53,11 +72,24 @@ public class EntityMovement : MonoBehaviour
 	public void checkCollision()
 	{
 		float raydistance = 0.5f;
+		byte operation = 0; //0 for equal, 1 for not equal.
+		int targetColliderType = 1;
+
+		if(CollisionType == CollisionTypes.CollideWithAllColliders)
+		{
+			targetColliderType = 0;
+			operation = 1;
+		}
+		if(CollisionType == CollisionTypes.CollideWithSolidColliders)
+			targetColliderType = 1;
+		if(CollisionType == CollisionTypes.CollideWithHalfColliders)
+			targetColliderType = 2;
+
 		int layerMask = 1 << 9;
 
 		Debug.Log("Layer mask: " + layerMask);
 
-		Vector2 CENTER = transform.position;
+		//Vector2 CENTER = transform.position; MUMMY
 		Vector2 TOPLEFT = new Vector2(transform.position.x - (2f/3f)+0.05f, transform.position.y + (2f/3f)-0.05f);
 		Vector2 TOPRIGHT = new Vector2(transform.position.x + (2f/3f)-0.05f, transform.position.y + (2f/3f)-0.05f);
 		Vector2 BOTLEFT = new Vector2(transform.position.x - (2f/3f)+0.05f, transform.position.y - (2f/3f)+0.05f);
@@ -85,7 +117,7 @@ public class EntityMovement : MonoBehaviour
 		{
 			if(HIT_TOPRIGHT_UP.transform.gameObject.GetComponent<Tile>())
 			{
-				if(HIT_TOPRIGHT_UP.transform.gameObject.GetComponent<Tile>().colliderType == 1)
+				if(Comparator_Execute(HIT_TOPRIGHT_UP.transform.gameObject.GetComponent<Tile>().colliderType, targetColliderType, (operation == 0) ? equalTo : notEqualTo))
 				{
 					if(vely*Time.deltaTime > HIT_TOPRIGHT_UP.distance-0.05f)
 					{
@@ -99,7 +131,7 @@ public class EntityMovement : MonoBehaviour
 		{			
 			if(HIT_TOPLEFT_UP.transform.gameObject.GetComponent<Tile>())
 			{				
-				if(HIT_TOPLEFT_UP.transform.gameObject.GetComponent<Tile>().colliderType == 1)
+				if(Comparator_Execute(HIT_TOPLEFT_UP.transform.gameObject.GetComponent<Tile>().colliderType, targetColliderType, (operation == 0) ? equalTo : notEqualTo))
 				{					
 					if(vely*Time.deltaTime > HIT_TOPLEFT_UP.distance-0.05f)
 					{
@@ -116,7 +148,7 @@ public class EntityMovement : MonoBehaviour
 		{			
 			if(HIT_TOPRIGHT_RIGHT.transform.gameObject.GetComponent<Tile>())
 			{				
-				if(HIT_TOPRIGHT_RIGHT.transform.gameObject.GetComponent<Tile>().colliderType == 1)
+				if(Comparator_Execute(HIT_TOPRIGHT_RIGHT.transform.gameObject.GetComponent<Tile>().colliderType, targetColliderType, (operation == 0) ? equalTo : notEqualTo))
 				{					
 					if(velx*Time.deltaTime > HIT_TOPRIGHT_RIGHT.distance-0.05f)
 					{
@@ -130,7 +162,7 @@ public class EntityMovement : MonoBehaviour
 		{			
 			if(HIT_BOTRIGHT_RIGHT.transform.gameObject.GetComponent<Tile>())
 			{	
-				if(HIT_BOTRIGHT_RIGHT.transform.gameObject.GetComponent<Tile>().colliderType == 1)
+				if(Comparator_Execute(HIT_BOTRIGHT_RIGHT.transform.gameObject.GetComponent<Tile>().colliderType, targetColliderType, (operation == 0) ? equalTo : notEqualTo))
 				{
 					if(velx*Time.deltaTime > HIT_BOTRIGHT_RIGHT.distance-0.05f)
 					{
@@ -147,7 +179,7 @@ public class EntityMovement : MonoBehaviour
 		{		
 			if(HIT_BOTRIGHT_DOWN.transform.gameObject.GetComponent<Tile>())
 			{			
-				if(HIT_BOTRIGHT_DOWN.transform.gameObject.GetComponent<Tile>().colliderType == 1)
+				if(Comparator_Execute(HIT_BOTRIGHT_DOWN.transform.gameObject.GetComponent<Tile>().colliderType, targetColliderType, (operation == 0) ? equalTo : notEqualTo))
 				{					
 					if(-vely*Time.deltaTime > HIT_BOTRIGHT_DOWN.distance-0.05f)
 					{
@@ -161,7 +193,7 @@ public class EntityMovement : MonoBehaviour
 		{			
 			if(HIT_BOTLEFT_DOWN.transform.gameObject.GetComponent<Tile>())
 			{				
-				if(HIT_BOTLEFT_DOWN.transform.gameObject.GetComponent<Tile>().colliderType == 1)
+				if(Comparator_Execute(HIT_BOTLEFT_DOWN.transform.gameObject.GetComponent<Tile>().colliderType, targetColliderType, (operation == 0) ? equalTo : notEqualTo))
 				{					
 					if(-vely*Time.deltaTime > HIT_BOTLEFT_DOWN.distance-0.05f)
 					{
@@ -178,7 +210,7 @@ public class EntityMovement : MonoBehaviour
 		{			
 			if(HIT_BOTLEFT_LEFT.transform.gameObject.GetComponent<Tile>())
 			{				
-				if(HIT_BOTLEFT_LEFT.transform.gameObject.GetComponent<Tile>().colliderType == 1)
+				if(Comparator_Execute(HIT_BOTLEFT_LEFT.transform.gameObject.GetComponent<Tile>().colliderType, targetColliderType, (operation == 0) ? equalTo : notEqualTo))
 				{					
 					if(-velx*Time.deltaTime > HIT_BOTLEFT_LEFT.distance-0.05f)
 					{
@@ -192,7 +224,7 @@ public class EntityMovement : MonoBehaviour
 		{			
 			if(HIT_TOPLEFT_LEFT.transform.gameObject.GetComponent<Tile>())
 			{	
-				if(HIT_TOPLEFT_LEFT.transform.gameObject.GetComponent<Tile>().colliderType == 1)
+				if(Comparator_Execute(HIT_TOPLEFT_LEFT.transform.gameObject.GetComponent<Tile>().colliderType, targetColliderType, (operation == 0) ? equalTo : notEqualTo))
 				{
 					if(-velx*Time.deltaTime > HIT_TOPLEFT_LEFT.distance-0.05f)
 					{
@@ -204,7 +236,7 @@ public class EntityMovement : MonoBehaviour
 		}
 		#endregion Collider_RightFace
 
-		/*
+
 		if(HIT_TOPLEFT_UP.point.x != 0 && HIT_TOPLEFT_UP.point.y != 0)
 			Debug.DrawLine(TOPLEFT, HIT_TOPLEFT_UP.point, Color.green, 0.5f);
 		if(HIT_TOPRIGHT_UP.point.x != 0 && HIT_TOPRIGHT_UP.point.y != 0)
@@ -264,5 +296,10 @@ public class EntityMovement : MonoBehaviour
 	public float getDistance(Vector2 p1, Vector2 p2)
 	{
 		return Vector2.Distance(p1, p2);
+	}
+
+	private bool Comparator_Execute(int a, int b, Comparator c)
+	{
+		return c(a, b);
 	}
 }
