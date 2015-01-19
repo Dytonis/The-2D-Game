@@ -2,6 +2,5 @@
 
 public class Room : MonoBehaviour
 {
-	public bool[] doorDirections = new bool[4]; //0 = up, 1 = right, 2 = bot, 3 = left
-	public RoomInfo info = new RoomInfo();
+    public bool[] doorDirections = new bool[4]; //0 = up, 1 = right, 2 = bot, 3 = left
 }
