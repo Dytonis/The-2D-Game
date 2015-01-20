@@ -39,14 +39,17 @@
 	<Reference Include="System.Core" />
 	<Reference Include="System.Xml.Linq" />
 	<Reference Include="UnityEngine">
-	  <HintPath>F:/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
+	  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
 	</Reference>
 	<Reference Include="UnityEditor">
-	  <HintPath>F:/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
+	  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
 	</Reference>
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Engine\AI\StandardEnemyAI.cs" />
+     <Compile Include="Assets\Engine\Camera\CameraFollowPlayer.cs" />
+     <Compile Include="Assets\Engine\Camera\CameraMovement.cs" />
+     <Compile Include="Assets\Engine\IO\IO.cs" />
      <Compile Include="Assets\Engine\IO\Input.cs" />
      <Compile Include="Assets\Engine\Level\LevelPerformanceBal.cs" />
      <Compile Include="Assets\Engine\Level\LevelPlacer.cs" />
@@ -58,7 +61,7 @@
      <Compile Include="Assets\Engine\Object\Item.cs" />
      <None Include="Assets\Engine\Level\IDLIST.txt" />
  <Reference Include="UnityEngine.UI">
- <HintPath>F:/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/4.6.1/UnityEngine.UI.dll</HintPath>
+ <HintPath>C:/Program Files (x86)/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/4.6.1/UnityEngine.UI.dll</HintPath>
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -87,8 +87,6 @@ public class EntityMovement : MonoBehaviour
 
 		int layerMask = 1 << 9;
 
-		Debug.Log("Layer mask: " + layerMask);
-
 		//Vector2 CENTER = transform.position; MUMMY
 		Vector2 TOPLEFT = new Vector2(transform.position.x - (2f/3f)+0.05f, transform.position.y + (2f/3f)-0.05f);
 		Vector2 TOPRIGHT = new Vector2(transform.position.x + (2f/3f)-0.05f, transform.position.y + (2f/3f)-0.05f);
@@ -256,21 +254,21 @@ public class EntityMovement : MonoBehaviour
 
 	}
 
-	public void MoveCommand(string dir, float speed)
+	public void MoveCommand(IO.DirectionTypes dir, float speed)
 	{
-		if(dir=="UP")
+		if(dir==IO.DirectionTypes.UP)
 		{
 			vely += speed;
 		}
-		if(dir=="DOWN")
+		if(dir==IO.DirectionTypes.DOWN)
 		{
 			vely -= speed;
 		}
-		if(dir=="LEFT")
+		if(dir==IO.DirectionTypes.LEFT)
 		{
 			velx -= speed;
 		}
-		if(dir=="RIGHT")
+		if(dir==IO.DirectionTypes.RIGHT)
 		{
 			velx += speed;
 		}
@@ -292,6 +290,12 @@ public class EntityMovement : MonoBehaviour
 			vely = -speedLimit;
 		}
 	}
+
+    public void MoveCommandRaw(Vector3 dir, float speed)
+    {
+        velx = (dir.x * speed);
+        vely = (dir.y * speed);
+    }
 
 	public float getDistance(Vector2 p1, Vector2 p2)
 	{
