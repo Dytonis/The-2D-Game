@@ -13,20 +13,11 @@ using System;
 using UnityEngine;
 namespace Engine.Camera
 {
-    public class CameraFollowPlayer : CameraMovement
+    public class Target : MonoBehaviour
     {
-        public float margin;
-
-        void Update()
+        void MoveTarget(Vector3 to)
         {
-            Vector3 heading = target.transform.position - transform.position;
-            float distance = heading.magnitude;
-            var direction = heading/distance;
-
-            Debug.DrawRay(transform.position, direction);
-
-            if(distance >= 0.000005+10)
-                IOComponent.TriggerInputRaw(direction);
+            gameObject.transform.position = new Vector3(to.x + 7.2f, to.y + 5.6f, 0f);
         }
     }
 }

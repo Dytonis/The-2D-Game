@@ -1,29 +1,31 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Engine\Camera\CameraFollowPlayer.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Engine\Level\LevelPlacer.cs">
     <Files>
-      <File FileName="Assets\Engine\Camera\CameraFollowPlayer.cs" Line="29" Column="52" />
-      <File FileName="Assets\Engine\Movement\EntityMovement.cs" Line="297" Column="32" />
+      <File FileName="Assets\Engine\Level\Room.cs" Line="8" Column="94" />
+      <File FileName="Assets\Engine\Camera\CameraFollowPlayer.cs" Line="26" Column="58" />
+      <File FileName="Assets\Engine\Movement\EntityMovement.cs" Line="90" Column="3" />
       <File FileName="Assets\Engine\Level\LevelPerformanceBal.cs" Line="1" Column="1" />
       <File FileName="Assets\Engine\Object\Entity.cs" Line="1" Column="1" />
       <File FileName="Assets\Engine\Level\Tile.cs" Line="1" Column="1" />
-      <File FileName="Assets\Engine\Level\Room.cs" Line="1" Column="1" />
-      <File FileName="Assets\Engine\Level\LevelPlacer.cs" Line="1" Column="1" />
-      <File FileName="Assets\Engine\IO\Input.cs" Line="61" Column="41" />
+      <File FileName="Assets\Engine\Level\LevelPlacer.cs" Line="51" Column="1" />
+      <File FileName="Assets\Engine\IO\Input.cs" Line="1" Column="1" />
       <File FileName="Assets\Engine\IO\IO.cs" Line="1" Column="1" />
-      <File FileName="Assets\Engine\Camera\CameraMovement.cs" Line="20" Column="34" />
+      <File FileName="Assets\Engine\Camera\CameraMovement.cs" Line="1" Column="1" />
+      <File FileName="Assets\Engine\Camera\Target.cs" Line="1" Column="1" />
+      <File FileName="Assets\Engine\Level\DetectRoomChange.cs" Line="1" Column="1" />
+      <File FileName="Assets\Engine\Camera\MinimapCameraFix.cs" Line="10" Column="32" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="Assembly-CSharp" expanded="True">
             <Node name="Engine" expanded="True">
-              <Node name="Camera" expanded="True">
-                <Node name="CameraFollowPlayer.cs" selected="True" />
+              <Node name="Camera" expanded="True" />
+              <Node name="Level" expanded="True">
+                <Node name="LevelPlacer.cs" selected="True" />
               </Node>
-              <Node name="IO" expanded="True" />
               <Node name="Movement" expanded="True" />
-              <Node name="Object" expanded="True" />
             </Node>
           </Node>
         </State>
@@ -39,11 +41,7 @@
     </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Breakpoint file="C:\Users\Tanner Wright\Documents\2D game\The-2D-Game\Assets\Engine\Level\LevelPlacer.cs" line="66" />
-      <Breakpoint file="C:\Users\Tanner Wright\Documents\2D game\The-2D-Game\Assets\Engine\Level\LevelPlacer.cs" line="62" />
-      <Breakpoint file="C:\Users\Tanner Wright\Documents\2D game\The-2D-Game\Assets\Engine\Level\LevelPlacer.cs" line="64" />
-    </BreakpointStore>
+    <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <AuthorInfo Name="Tanner Wright" Email="" Copyright="Tanner Wright" Company="Four Corners" Trademark="" />

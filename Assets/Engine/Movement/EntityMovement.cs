@@ -12,6 +12,8 @@ public class EntityMovement : MonoBehaviour
 
 	private float cutoffSpeed = 0.05f;
 
+    public bool CheckForRoomEnter = true;
+
 	private delegate bool Comparator(int x, int y);
 	private Comparator equalTo = delegate(int x, int y) { return x == y; };
 	private Comparator notEqualTo = delegate(int x, int y) { return x != y; };
@@ -123,7 +125,7 @@ public class EntityMovement : MonoBehaviour
 						transform.position = new Vector2(transform.position.x, HIT_TOPRIGHT_UP.point.y - (2f/3f));
 					}
 				}
-			}
+            }
 		}
 		else if(HIT_TOPLEFT_UP.collider != null)
 		{			

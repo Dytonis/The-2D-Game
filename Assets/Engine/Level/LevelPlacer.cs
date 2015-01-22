@@ -15,9 +15,6 @@ public class LevelPlacer : MonoBehaviour
     private string
         LEVEL_GENERATION = "Below are level generation values!";
     [SerializeField]
-    private List<Sprite>
-        roomList = new List<Sprite>();
-    [SerializeField]
     private List<GameObject>
         roomLayout = new List<GameObject>();
     
@@ -31,6 +28,7 @@ public class LevelPlacer : MonoBehaviour
         System.Diagnostics.Stopwatch stop = new System.Diagnostics.Stopwatch();
         stop.Start();
         getLevelRoomPlacement();
+        isCorrectPlacements(1);
         stop.Stop();
         Debug.Log("Level generation finished in " + (stop.Elapsed.TotalMilliseconds * 1000) + "ns");
     }
@@ -39,6 +37,24 @@ public class LevelPlacer : MonoBehaviour
     void Update()
     {
     
+    }
+
+    private void isCorrectPlacements(int maxIterations)
+    {
+        foreach(GameObject room in roomLayout)
+        {
+            Collider2D HIT_LEFT = Physics2D.OverlapCircle(new Vector2(room.transform.position.x-16,room.transform.position.y), 1f); //raycast left
+
+            if(HIT_LEFT != null) //check directly left
+            {
+                //cool theres a room to the left
+                Debug.Log("wall detected: " + HIT_LEFT.collider.gameObject);
+            }
+            else
+            {
+                room.GetComponent<Room>().DoorTiles[1].gameObject.GetComponent<SpriteRenderer>().sprite = tileList[1]; //dorTiles[1] is the left door, tileList[1] is a wall tile.  
+            }
+        }
     }
 
     private void getLevelRoomPlacement()
@@ -53,8 +69,24 @@ public class LevelPlacer : MonoBehaviour
             for (int x = 0; x < width; x++)
             { 
                 GameObject newRoom = Instantiate(room, new Vector3(x * 16, y * 16), room.transform.rotation) as GameObject;
-                
-                beginTilePlacement(worldSpawnList [grid [x, y]], newRoom);
+                roomLayout.Add(newRoom);
+
+                if(Random.Range(1,3) == 1)
+                {
+                    beginTilePlacement(worldSpawnList [grid [x, y]], newRoom);
+                    newRoom.GetComponent<Room>().DoorPlacements[0] = true;
+                    newRoom.GetComponent<Room>().DoorPlacements[1] = true;
+                    newRoom.GetComponent<Room>().DoorPlacements[2] = true;
+                    newRoom.GetComponent<Room>().DoorPlacements[3] = true;
+                }
+                else
+                {
+                    newRoom.GetComponent<Room>().DoorPlacements[0] = false;
+                    newRoom.GetComponent<Room>().DoorPlacements[1] = false;
+                    newRoom.GetComponent<Room>().DoorPlacements[2] = false;
+                    newRoom.GetComponent<Room>().DoorPlacements[3] = false;
+
+                }
             }   
         }
     }
@@ -68,7 +100,8 @@ public class LevelPlacer : MonoBehaviour
             
         float sx = sp.rect.x;
         float sy = sp.rect.y;
-            
+        int doorCount = 0;    
+
         for (int y = (int)sy-1; y <= sy+10; y++)
         {
             for (int x = (int)sx; x <= sx+10; x++)
@@ -76,7 +109,7 @@ public class LevelPlacer : MonoBehaviour
                 int c = 0;
                 foreach (Color color in colorList)
                 {
-                    if (checkColor(t.GetPixel(x, y), color, 0.2f))
+                    if (checkColor(t.GetPixel(x, y), color, 0.1f))
                     {
                         GameObject newTile = Instantiate(tile, new Vector3((float)((x - 1) * 1.6) - (float)(sx * 1.6), (float)((y - 1) * 1.6) - (float)(sy * 1.6), 0), tile.transform.rotation) as GameObject;
                         newTile.GetComponent<SpriteRenderer>().sprite = tileList [c];
@@ -106,10 +139,12 @@ public class LevelPlacer : MonoBehaviour
                             newTile.gameObject.layer = 9;
                         }
                         if (c == 3)
-                        {
+                        { //DOOR
+                            roomParent.GetComponent<Room>().DoorTiles[doorCount] = newTile;
                             newTile.GetComponent<Tile>().colliderType = 0;
                             newTile.gameObject.layer = 8;
                             newTile.GetComponent<BoxCollider2D>().enabled = false;
+                            doorCount++;
                         }
                         #endregion
                     }
@@ -146,7 +181,7 @@ public class LevelGenerator
     private static int y;
     private static int[,] levelList;
     
-    public static int[,] getWorld(int roomsSize, int levelWidth, int levelHeight)
+    public static int[,] getWorld(int roomsSize, int levelWidth, int levelHeight) //returns array [x,y] of world file's ID (100% fill)
     {
         x = levelWidth;
         y = levelHeight;
@@ -157,7 +192,7 @@ public class LevelGenerator
         {
             for (int z = 0; z < x; z++)
             {
-                levelList [z, w] = getRandomNumber(0, roomsSize - 1);   
+                levelList [z, w] = getRandomNumber(0, roomsSize);   
             }
         }
         

@@ -49,8 +49,11 @@
      <Compile Include="Assets\Engine\AI\StandardEnemyAI.cs" />
      <Compile Include="Assets\Engine\Camera\CameraFollowPlayer.cs" />
      <Compile Include="Assets\Engine\Camera\CameraMovement.cs" />
+     <Compile Include="Assets\Engine\Camera\MinimapCameraFix.cs" />
+     <Compile Include="Assets\Engine\Camera\Target.cs" />
      <Compile Include="Assets\Engine\IO\IO.cs" />
      <Compile Include="Assets\Engine\IO\Input.cs" />
+     <Compile Include="Assets\Engine\Level\DetectRoomChange.cs" />
      <Compile Include="Assets\Engine\Level\LevelPerformanceBal.cs" />
      <Compile Include="Assets\Engine\Level\LevelPlacer.cs" />
      <Compile Include="Assets\Engine\Level\Room.cs" />
