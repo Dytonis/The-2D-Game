@@ -54,8 +54,8 @@
      <Compile Include="Assets\Engine\IO\IO.cs" />
      <Compile Include="Assets\Engine\IO\Input.cs" />
      <Compile Include="Assets\Engine\Level\DetectRoomChange.cs" />
-     <Compile Include="Assets\Engine\Level\LevelPerformanceBal.cs" />
      <Compile Include="Assets\Engine\Level\LevelPlacer.cs" />
+     <Compile Include="Assets\Engine\Level\LevelRevealer.cs" />
      <Compile Include="Assets\Engine\Level\Room.cs" />
      <Compile Include="Assets\Engine\Level\Tile.cs" />
      <Compile Include="Assets\Engine\Movement\CollisionMesh.cs" />

@@ -1,15 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class LevelPlacer : MonoBehaviour
 {
-
+    public GameObject player;
     public Sprite[] tileList;
     public Sprite[] worldSpawnList;
     public Color[] colorList;
     public GameObject tile;
     public GameObject room;
+    public List<GameObject> mainBlob = new List<GameObject>();
     public byte DoorColorElement = 3;
     [SerializeField]
     private string
@@ -28,7 +30,9 @@ public class LevelPlacer : MonoBehaviour
         System.Diagnostics.Stopwatch stop = new System.Diagnostics.Stopwatch();
         stop.Start();
         getLevelRoomPlacement();
-        isCorrectPlacements(1);
+        isCorrectPlacements();
+        setSpawnRoom();
+        getMainBlob();
         stop.Stop();
         Debug.Log("Level generation finished in " + (stop.Elapsed.TotalMilliseconds * 1000) + "ns");
     }
@@ -39,22 +43,191 @@ public class LevelPlacer : MonoBehaviour
     
     }
 
-    private void isCorrectPlacements(int maxIterations)
+    private void getMainBlob()
     {
+        int count = 0;
+        
         foreach(GameObject room in roomLayout)
         {
-            Collider2D HIT_LEFT = Physics2D.OverlapCircle(new Vector2(room.transform.position.x-16,room.transform.position.y), 1f); //raycast left
+            count++;
+            if(room.GetComponent<Room>().isSpawnRoom)
+                break;
+        }
+
+        getBlob(roomLayout[count-1]);
+    }
+
+
+    private List<GameObject> getBlob(GameObject startRoom)
+    {
+        List<GameObject> list = new List<GameObject>();
+
+        foreach(GameObject obj in getSurroundingRooms(startRoom))
+        {
+            if(obj.GetComponent<Room>().spooled == false)
+            {
+                list.Concat(getSurroundingRooms(obj));
+                list.Add(obj);
+            }
+
+            Debug.Log("blob spool: " + obj.name);
+
+            obj.GetComponent<Room>().spooled = true;
+        }
+
+        foreach(GameObject l in list)
+            Debug.Log("BLOB: " + l.name);
+
+        return list;
+    }
+
+    private List<GameObject> getSurroundingRooms(GameObject centerRoom)
+    {
+        Collider2D HIT_LEFT = Physics2D.OverlapCircle(new Vector2(centerRoom.transform.position.x+7.2f-16f,centerRoom.transform.position.y+5.6f), 1f); //raycast left         
+        
+        Collider2D HIT_RIGHT = Physics2D.OverlapCircle(new Vector2(centerRoom.transform.position.x+7.2f+16f,centerRoom.transform.position.y+5.6f), 1f); //raycast left
+        
+        Collider2D HIT_UP = Physics2D.OverlapCircle(new Vector2(centerRoom.transform.position.x+7.2f,centerRoom.transform.position.y+5.6f+16f), 1f); //raycast left
+        
+        Collider2D HIT_DOWN = Physics2D.OverlapCircle(new Vector2(centerRoom.transform.position.x+7.2f,centerRoom.transform.position.y+5.6f-16f), 1f); //raycast left
+
+        List<GameObject> list = new List<GameObject>();
+
+        if(HIT_LEFT != null) //check directly left
+        {
+            //cool theres a room to the left
+            list.Add(HIT_LEFT.gameObject);
+        }
+
+        if(HIT_RIGHT != null) //check directly left
+        {
+            //cool theres a room to the left
+            list.Add(HIT_RIGHT.gameObject);
+        }
+       
+        if(HIT_UP != null) //check directly left
+        {
+            //cool theres a room to the left
+            list.Add(HIT_UP.gameObject);
+        }
+
+        if(HIT_DOWN != null) //check directly left
+        {
+            //cool theres a room to the left
+            list.Add(HIT_DOWN.gameObject);
+        }
+
+        return list;
+    }
+
+    private int setSpawnRoom()
+    {
+        int count = 0;
+
+        foreach(GameObject room in roomLayout)
+        {
+            count++;
+        }
+
+        int roomNumberForSpawn = Random.Range(0, count);
+
+        roomLayout[roomNumberForSpawn].GetComponent<Room>().isSpawnRoom = true;
+        player.transform.position = roomLayout[roomNumberForSpawn].GetComponent<Room>().center;
+
+        return roomNumberForSpawn;
+
+    }
+
+    private void isCorrectPlacements()
+    {
+        List<GameObject> roomsToRemove = new List<GameObject>();
+
+        foreach(GameObject room in roomLayout)
+        {
+            Collider2D HIT_LEFT = Physics2D.OverlapCircle(new Vector2(room.transform.position.x+7.2f-16f,room.transform.position.y+5.6f), 1f); //raycast left         
+
+            Collider2D HIT_RIGHT = Physics2D.OverlapCircle(new Vector2(room.transform.position.x+7.2f+16f,room.transform.position.y+5.6f), 1f); //raycast left
+
+            Collider2D HIT_UP = Physics2D.OverlapCircle(new Vector2(room.transform.position.x+7.2f,room.transform.position.y+5.6f+16f), 1f); //raycast left
+
+            Collider2D HIT_DOWN = Physics2D.OverlapCircle(new Vector2(room.transform.position.x+7.2f,room.transform.position.y+5.6f-16f), 1f); //raycast left
+
+            Debug.Log(room.name);
 
             if(HIT_LEFT != null) //check directly left
             {
                 //cool theres a room to the left
-                Debug.Log("wall detected: " + HIT_LEFT.collider.gameObject);
+                Debug.Log("wall detected: " + HIT_LEFT.gameObject);
             }
             else
             {
-                room.GetComponent<Room>().DoorTiles[1].gameObject.GetComponent<SpriteRenderer>().sprite = tileList[1]; //dorTiles[1] is the left door, tileList[1] is a wall tile.  
+                if(room.GetComponent<Room>().DoorPlacements[1])
+                {
+                    room.GetComponent<Room>().DoorTiles[1].gameObject.GetComponent<SpriteRenderer>().sprite = tileList[1]; //dorTiles[1] is the left door, tileList[1] is a wall tile.  
+                    room.GetComponent<Room>().DoorTiles[1].gameObject.GetComponent<BoxCollider2D>().enabled = true;
+                    room.GetComponent<Room>().DoorTiles[1].gameObject.layer = 9;
+                    room.GetComponent<Room>().DoorTiles[1].gameObject.GetComponent<Tile>().colliderType = 1;
+                    room.GetComponent<Room>().DoorPlacements[1] = false;
+                }
+            }
+            if(HIT_RIGHT != null) //check directly left
+            {
+                //cool theres a room to the left
+                Debug.Log("wall detected: " + HIT_RIGHT.gameObject);
+            }
+            else
+            {
+                if(room.GetComponent<Room>().DoorPlacements[2])
+                {
+                    room.GetComponent<Room>().DoorTiles[2].gameObject.GetComponent<SpriteRenderer>().sprite = tileList[1]; //dorTiles[1] is the left door, tileList[1] is a wall tile.  
+                    room.GetComponent<Room>().DoorTiles[2].gameObject.GetComponent<BoxCollider2D>().enabled = true;
+                    room.GetComponent<Room>().DoorTiles[2].gameObject.layer = 9;
+                    room.GetComponent<Room>().DoorTiles[2].gameObject.GetComponent<Tile>().colliderType = 1;
+                    room.GetComponent<Room>().DoorPlacements[2] = false;
+                }
+            }
+            if(HIT_UP != null) //check directly left
+            {
+                //cool theres a room to the left
+                Debug.Log("wall detected: " + HIT_UP.gameObject);
+            }
+            else
+            {
+                if(room.GetComponent<Room>().DoorPlacements[3])
+                {
+                    room.GetComponent<Room>().DoorTiles[3].gameObject.GetComponent<SpriteRenderer>().sprite = tileList[1]; //dorTiles[1] is the left door, tileList[1] is a wall tile.  
+                    room.GetComponent<Room>().DoorTiles[3].gameObject.GetComponent<BoxCollider2D>().enabled = true;
+                    room.GetComponent<Room>().DoorTiles[3].gameObject.layer = 9;
+                    room.GetComponent<Room>().DoorTiles[3].gameObject.GetComponent<Tile>().colliderType = 1;
+                    room.GetComponent<Room>().DoorPlacements[3] = false;
+                }
+            }
+            if(HIT_DOWN != null) //check directly left
+            {
+                //cool theres a room to the left
+                Debug.Log("wall detected: " + HIT_DOWN.gameObject);
+            }
+            else
+            {
+                if(room.GetComponent<Room>().DoorPlacements[0])
+                {
+                    room.GetComponent<Room>().DoorTiles[0].gameObject.GetComponent<SpriteRenderer>().sprite = tileList[1]; //dorTiles[1] is the left door, tileList[1] is a wall tile.  
+                    room.GetComponent<Room>().DoorTiles[0].gameObject.GetComponent<BoxCollider2D>().enabled = true;
+                    room.GetComponent<Room>().DoorTiles[0].gameObject.layer = 9;
+                    room.GetComponent<Room>().DoorTiles[0].gameObject.GetComponent<Tile>().colliderType = 1;
+                    room.GetComponent<Room>().DoorPlacements[0] = false;
+                }
+            }
+
+            if(room.GetComponent<Room>().isAnyDoors() == false)
+            {
+                roomsToRemove.Add(room);
+                Destroy(room);
             }
         }
+
+        foreach(GameObject room in roomsToRemove)
+            roomLayout.Remove(room);
     }
 
     private void getLevelRoomPlacement()
@@ -70,8 +243,9 @@ public class LevelPlacer : MonoBehaviour
             { 
                 GameObject newRoom = Instantiate(room, new Vector3(x * 16, y * 16), room.transform.rotation) as GameObject;
                 roomLayout.Add(newRoom);
+                newRoom.name = "Room (" + x + ", " + y + ")";
 
-                if(Random.Range(1,3) == 1)
+                if(Random.Range(1,30) <= 15)
                 {
                     beginTilePlacement(worldSpawnList [grid [x, y]], newRoom);
                     newRoom.GetComponent<Room>().DoorPlacements[0] = true;
@@ -85,7 +259,7 @@ public class LevelPlacer : MonoBehaviour
                     newRoom.GetComponent<Room>().DoorPlacements[1] = false;
                     newRoom.GetComponent<Room>().DoorPlacements[2] = false;
                     newRoom.GetComponent<Room>().DoorPlacements[3] = false;
-
+                    newRoom.GetComponent<BoxCollider2D>().enabled = false;
                 }
             }   
         }

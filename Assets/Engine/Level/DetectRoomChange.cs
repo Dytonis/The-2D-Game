@@ -17,6 +17,9 @@ public class DetectRoomChange : MonoBehaviour
             if(HIT_UP.collider.transform.gameObject.GetComponent<Room>())
             {
                 HIT_UP.collider.transform.gameObject.SendMessage("RecieveCollide");
+
+                foreach(Transform child in HIT_UP.collider.transform)
+                    child.gameObject.SetActive(true);
             }
         }
         if(HIT_RIGHT.collider != null)
@@ -24,6 +27,8 @@ public class DetectRoomChange : MonoBehaviour
             if(HIT_RIGHT.collider.transform.gameObject.GetComponent<Room>())
             {
                 HIT_RIGHT.collider.transform.gameObject.SendMessage("RecieveCollide");
+                foreach(Transform child in HIT_RIGHT.collider.transform)
+                    child.gameObject.SetActive(true);
             }
         }
         if(HIT_DOWN.collider != null)
@@ -31,6 +36,8 @@ public class DetectRoomChange : MonoBehaviour
             if(HIT_DOWN.collider.transform.gameObject.GetComponent<Room>())
             {
                 HIT_DOWN.collider.transform.gameObject.SendMessage("RecieveCollide");
+                foreach(Transform child in HIT_DOWN.collider.transform)
+                    child.gameObject.SetActive(true);
             }
         }
         if(HIT_LEFT.collider != null)
@@ -38,6 +45,8 @@ public class DetectRoomChange : MonoBehaviour
             if(HIT_LEFT.collider.transform.gameObject.GetComponent<Room>())
             {
                 HIT_LEFT.collider.transform.gameObject.SendMessage("RecieveCollide");
+                foreach(Transform child in HIT_LEFT.collider.transform)
+                    child.gameObject.SetActive(true);
             }
         }
     }

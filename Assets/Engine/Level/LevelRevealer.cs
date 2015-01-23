@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class LevelPerformanceBal : MonoBehaviour
+public class LevelRevealer : MonoBehaviour
 {
     public float MaskDistance = 10f;
     private GameObject[] gameObjectList;
@@ -11,19 +11,17 @@ public class LevelPerformanceBal : MonoBehaviour
     {
         //Runs after level placer, so this will ignore any new placed gameobjects. Thats OK
         gameObjectList = GameObject.FindGameObjectsWithTag("Tile");
+        foreach(GameObject obj in gameObjectList)
+            obj.SetActive(false);
     }
 
     void Update()
     {
-        foreach (GameObject go in gameObjectList)
+        /*foreach (GameObject go in gameObjectList)
         {
-            if (Vector3.Distance(gameObject.transform.position, go.transform.position) >= MaskDistance)
-            if (go.GetComponent<SpriteRenderer>())
-                go.gameObject.renderer.enabled = false;
-
             if (Vector3.Distance(gameObject.transform.position, go.transform.position) <= MaskDistance)
             if (go.GetComponent<SpriteRenderer>())
-                go.gameObject.renderer.enabled = true;
-        }
+                    go.SetActive(true);
+        }*/
     }
 }
