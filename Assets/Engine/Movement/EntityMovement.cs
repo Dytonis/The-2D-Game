@@ -14,6 +14,7 @@ public class EntityMovement : MonoBehaviour
 
     public bool CheckForRoomEnter = true;
 
+    public bool FlipDirection = false;
 	private delegate bool Comparator(int x, int y);
 	private Comparator equalTo = delegate(int x, int y) { return x == y; };
 	private Comparator notEqualTo = delegate(int x, int y) { return x != y; };
@@ -38,6 +39,22 @@ public class EntityMovement : MonoBehaviour
 			checkCollision();
 
 		gameObject.transform.Translate(velx*Time.deltaTime, vely*Time.deltaTime, 0);
+        if (velx > 0)
+        {            
+            if (FlipDirection==true)
+            {
+                gameObject.transform.localScale=new Vector3(-1, 1);
+                
+            }
+        }
+        if (velx < 0)
+        {            
+            if (FlipDirection==true)
+            {
+                gameObject.transform.localScale=new Vector3(1, 1);
+                
+            }
+        }
 
 		if(UnityEngine.Input.GetAxisRaw("UP") == 0 && UnityEngine.Input.GetAxisRaw("DOWN") == 0)
 		{

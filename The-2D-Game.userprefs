@@ -1,46 +1,9 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workspace />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Engine\Movement\EntityMovement.cs">
     <Files>
-      <File FileName="Assets\Engine\Level\LevelPlacer.cs" Line="29" Column="48" />
-      <File FileName="Assets\Engine\Level\Room.cs" Line="10" Column="33" />
-      <File FileName="Assets\Engine\Camera\CameraFollowPlayer.cs" Line="26" Column="58" />
-      <File FileName="Assets\Engine\Movement\EntityMovement.cs" Line="118" Column="62" />
-      <File FileName="Assets\Engine\Level\LevelRevealer.cs" Line="1" Column="1" />
-      <File FileName="Assets\Engine\Object\Entity.cs" Line="1" Column="1" />
-      <File FileName="Assets\Engine\Level\Tile.cs" Line="1" Column="1" />
-      <File FileName="Assets\Engine\IO\Input.cs" Line="1" Column="1" />
-      <File FileName="Assets\Engine\IO\IO.cs" Line="1" Column="1" />
-      <File FileName="Assets\Engine\Camera\CameraMovement.cs" Line="1" Column="1" />
-      <File FileName="Assets\Engine\Camera\Target.cs" Line="1" Column="1" />
-      <File FileName="Assets\Engine\Level\DetectRoomChange.cs" Line="26" Column="10" />
-      <File FileName="Assets\Engine\Camera\MinimapCameraFix.cs" Line="17" Column="6" />
+      <File FileName="Assets\Engine\Movement\EntityMovement.cs" Line="292" Column="18" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State expanded="True">
-          <Node name="Assembly-CSharp" expanded="True">
-            <Node name="Engine" expanded="True">
-              <Node name="Camera" expanded="True" />
-              <Node name="IO" expanded="True" />
-              <Node name="Level" expanded="True" />
-              <Node name="Movement" expanded="True">
-                <Node name="EntityMovement.cs" selected="True" />
-              </Node>
-              <Node name="Object" expanded="True" />
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-      <Pad Id="ClassPad">
-        <State expanded="True" selected="True" />
-      </Pad>
-      <Pad Id="MonoDevelop.Debugger.WatchPad">
-        <State>
-          <Value>sroom.rect.height</Value>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />

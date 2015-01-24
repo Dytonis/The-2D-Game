@@ -1,8 +1,8 @@
 fileFormatVersion: 2
-guid: 815b1f5c25b15d34dbea45332b188c89
+guid: 53858ac33f424db4cbd86928764d0b47
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Player
+    21300000: CharacterTile_0
     21300002: CharacterTile_1
     21300004: CharacterTile_2
     21300006: CharacterTile_3
@@ -69,7 +69,7 @@ TextureImporter:
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
-    enableMipMap: 0
+    enableMipMap: 1
     linearTexture: 0
     correctGamma: 0
     fadeOut: 0
@@ -81,15 +81,15 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: .25
     normalMapFilter: 0
-  isReadable: 1
+  isReadable: 0
   grayScaleToAlpha: 0
   generateCubemap: 0
   seamlessCubemap: 0
-  textureFormat: 7
+  textureFormat: 4
   maxTextureSize: 128
   textureSettings:
     filterMode: 0
-    aniso: -1
+    aniso: 16
     mipBias: -1
     wrapMode: 1
   nPOTScale: 0
@@ -101,13 +101,13 @@ TextureImporter:
   alignment: 0
   spritePivot: {x: .5, y: .5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spritePixelsToUnits: 12
+  spritePixelsToUnits: 10
   alphaIsTransparency: 1
   textureType: 5
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: Player
+    - name: CharacterTile_0
       rect:
         serializedVersion: 2
         x: 0
@@ -115,7 +115,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: .5, y: .5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: CharacterTile_1
       rect:
@@ -195,7 +195,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: .5, y: .5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: CharacterTile_9
       rect:
@@ -271,11 +271,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 81
+        y: 80
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: .5, y: .5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: CharacterTile_17
       rect:
@@ -415,7 +415,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: .5, y: .5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: CharacterTile_31
       rect:
