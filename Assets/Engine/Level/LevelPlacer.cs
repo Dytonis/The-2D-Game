@@ -33,6 +33,7 @@ public class LevelPlacer : MonoBehaviour
         isCorrectPlacements();
         setSpawnRoom();
         getMainBlob();
+        destroyNonBlob();
         stop.Stop();
         Debug.Log("Level generation finished in " + (stop.Elapsed.TotalMilliseconds * 1000) + "ns");
     }
@@ -41,6 +42,15 @@ public class LevelPlacer : MonoBehaviour
     void Update()
     {
     
+    }
+
+    private void destroyNonBlob()
+    {
+        foreach(GameObject room in roomLayout)
+        {
+            if(room.GetComponent<Room>().spooled == false)
+                Destroy(room);
+        }
     }
 
     private void getMainBlob()
@@ -54,25 +64,31 @@ public class LevelPlacer : MonoBehaviour
                 break;
         }
 
-        getBlob(roomLayout[count-1]);
+        mainBlob = getBlob(roomLayout[count-1]);
     }
 
 
     private List<GameObject> getBlob(GameObject startRoom)
     {
         List<GameObject> list = new List<GameObject>();
+        startRoom.GetComponent<Room>().spooled = true;
+        list.Add(startRoom);
 
         foreach(GameObject obj in getSurroundingRooms(startRoom))
         {
-            if(obj.GetComponent<Room>().spooled == false)
+            if(obj.GetComponent<Room>())
             {
-                list.Concat(getSurroundingRooms(obj));
-                list.Add(obj);
+                if(obj.GetComponent<Room>().spooled == false)
+                {
+                    list.Concat(getBlob(obj));
+                    list.Add(obj);
+                }   
             }
 
             Debug.Log("blob spool: " + obj.name);
 
-            obj.GetComponent<Room>().spooled = true;
+            if(obj.GetComponent<Room>())
+                obj.GetComponent<Room>().spooled = true;
         }
 
         foreach(GameObject l in list)
