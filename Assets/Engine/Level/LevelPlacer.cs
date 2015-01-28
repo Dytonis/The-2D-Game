@@ -19,37 +19,77 @@ public class LevelPlacer : MonoBehaviour
     [SerializeField]
     private List<GameObject>
         roomLayout = new List<GameObject>();
+    [SerializeField]
+    private GameObject[]
+        roomLayoutFinalized;
     
     public int WorldWidth = 3;
     public int WorldHeight = 3;
 
     // Use this for initialization
     void Start()
-    {
+    {    
         Debug.Log("Level generation started!");
         System.Diagnostics.Stopwatch stop = new System.Diagnostics.Stopwatch();
         stop.Start();
-        getLevelRoomPlacement();
-        isCorrectPlacements();
-        setSpawnRoom();
-        getMainBlob();
-        destroyNonBlob();
+        GenerateWorld(10, 5, 15);
         stop.Stop();
-        Debug.Log("Level generation finished in " + (stop.Elapsed.TotalMilliseconds * 1000) + "ns");
+        Debug.Log("Level generation finished in " + (stop.Elapsed.TotalSeconds) + "s");
     }
     
-    // Update is called once per frame
-    void Update()
+    public void GenerateWorld(int maxIterations, int minSize, int maxSize)
     {
+        //saftey net
+        if (minSize < 2 || maxSize > (WorldHeight * WorldWidth) || maxIterations < 1)
+        {
+            Debug.LogWarning("Argument exception! 1: " + maxIterations + ", 2: " + minSize + ", 3: " + maxSize);
+            return;
+        }
+        //saftey net
     
+        int iterations = 0;
+        while (iterations < maxIterations)
+        {
+            //steps
+            getLevelRoomPlacement();
+            isCorrectPlacements();
+            setSpawnRoom();
+            getMainBlob();
+            destroyNonBlob(); 
+            //we have a world
+            
+            roomLayoutFinalized = roomLayout.ToArray();
+            
+            if (roomLayoutFinalized.Length >= minSize)
+            if (roomLayoutFinalized.Length <= maxSize)
+                break;
+                
+            foreach (GameObject r in roomLayoutFinalized)
+                Destroy(r);  
+              
+            roomLayout.Clear();
+            mainBlob.Clear();
+            roomLayoutFinalized = null;
+        }
+        
+        return;
     }
 
     private void destroyNonBlob()
     {
-        foreach(GameObject room in roomLayout)
+        List<GameObject> removeList = new List<GameObject>();
+        foreach (GameObject room in roomLayout)
         {
-            if(room.GetComponent<Room>().spooled == false)
+            if (room.GetComponent<Room>().spooled == false)
+            {
+                removeList.Add(room);
                 Destroy(room);
+            }
+        }
+        
+        foreach (GameObject ro in removeList)
+        {
+            roomLayout.Remove(ro);
         }
     }
 
@@ -57,14 +97,14 @@ public class LevelPlacer : MonoBehaviour
     {
         int count = 0;
         
-        foreach(GameObject room in roomLayout)
+        foreach (GameObject room in roomLayout)
         {
             count++;
-            if(room.GetComponent<Room>().isSpawnRoom)
+            if (room.GetComponent<Room>().isSpawnRoom)
                 break;
         }
 
-        mainBlob = getBlob(roomLayout[count-1]);
+        mainBlob = getBlob(roomLayout [count - 1]);
     }
 
 
@@ -74,60 +114,55 @@ public class LevelPlacer : MonoBehaviour
         startRoom.GetComponent<Room>().spooled = true;
         list.Add(startRoom);
 
-        foreach(GameObject obj in getSurroundingRooms(startRoom))
+        foreach (GameObject obj in getSurroundingRooms(startRoom))
         {
-            if(obj.GetComponent<Room>())
+            if (obj.GetComponent<Room>())
             {
-                if(obj.GetComponent<Room>().spooled == false)
+                if (obj.GetComponent<Room>().spooled == false)
                 {
                     list.Concat(getBlob(obj));
                     list.Add(obj);
                 }   
             }
 
-            Debug.Log("blob spool: " + obj.name);
-
-            if(obj.GetComponent<Room>())
+            if (obj.GetComponent<Room>())
                 obj.GetComponent<Room>().spooled = true;
         }
-
-        foreach(GameObject l in list)
-            Debug.Log("BLOB: " + l.name);
 
         return list;
     }
 
     private List<GameObject> getSurroundingRooms(GameObject centerRoom)
     {
-        Collider2D HIT_LEFT = Physics2D.OverlapCircle(new Vector2(centerRoom.transform.position.x+7.2f-16f,centerRoom.transform.position.y+5.6f), 1f); //raycast left         
+        Collider2D HIT_LEFT = Physics2D.OverlapCircle(new Vector2(centerRoom.transform.position.x + 7.2f - 16f, centerRoom.transform.position.y + 5.6f), 1f); //raycast left         
         
-        Collider2D HIT_RIGHT = Physics2D.OverlapCircle(new Vector2(centerRoom.transform.position.x+7.2f+16f,centerRoom.transform.position.y+5.6f), 1f); //raycast left
+        Collider2D HIT_RIGHT = Physics2D.OverlapCircle(new Vector2(centerRoom.transform.position.x + 7.2f + 16f, centerRoom.transform.position.y + 5.6f), 1f); //raycast left
         
-        Collider2D HIT_UP = Physics2D.OverlapCircle(new Vector2(centerRoom.transform.position.x+7.2f,centerRoom.transform.position.y+5.6f+16f), 1f); //raycast left
+        Collider2D HIT_UP = Physics2D.OverlapCircle(new Vector2(centerRoom.transform.position.x + 7.2f, centerRoom.transform.position.y + 5.6f + 16f), 1f); //raycast left
         
-        Collider2D HIT_DOWN = Physics2D.OverlapCircle(new Vector2(centerRoom.transform.position.x+7.2f,centerRoom.transform.position.y+5.6f-16f), 1f); //raycast left
+        Collider2D HIT_DOWN = Physics2D.OverlapCircle(new Vector2(centerRoom.transform.position.x + 7.2f, centerRoom.transform.position.y + 5.6f - 16f), 1f); //raycast left
 
         List<GameObject> list = new List<GameObject>();
 
-        if(HIT_LEFT != null) //check directly left
+        if (HIT_LEFT != null) //check directly left
         {
             //cool theres a room to the left
             list.Add(HIT_LEFT.gameObject);
         }
 
-        if(HIT_RIGHT != null) //check directly left
+        if (HIT_RIGHT != null) //check directly left
         {
             //cool theres a room to the left
             list.Add(HIT_RIGHT.gameObject);
         }
        
-        if(HIT_UP != null) //check directly left
+        if (HIT_UP != null) //check directly left
         {
             //cool theres a room to the left
             list.Add(HIT_UP.gameObject);
         }
 
-        if(HIT_DOWN != null) //check directly left
+        if (HIT_DOWN != null) //check directly left
         {
             //cool theres a room to the left
             list.Add(HIT_DOWN.gameObject);
@@ -140,15 +175,15 @@ public class LevelPlacer : MonoBehaviour
     {
         int count = 0;
 
-        foreach(GameObject room in roomLayout)
+        foreach (GameObject room in roomLayout)
         {
             count++;
         }
 
         int roomNumberForSpawn = Random.Range(0, count);
 
-        roomLayout[roomNumberForSpawn].GetComponent<Room>().isSpawnRoom = true;
-        player.transform.position = roomLayout[roomNumberForSpawn].GetComponent<Room>().center;
+        roomLayout [roomNumberForSpawn].GetComponent<Room>().isSpawnRoom = true;
+        player.transform.position = roomLayout [roomNumberForSpawn].GetComponent<Room>().center;
 
         return roomNumberForSpawn;
 
@@ -158,91 +193,81 @@ public class LevelPlacer : MonoBehaviour
     {
         List<GameObject> roomsToRemove = new List<GameObject>();
 
-        foreach(GameObject room in roomLayout)
+        foreach (GameObject room in roomLayout)
         {
-            Collider2D HIT_LEFT = Physics2D.OverlapCircle(new Vector2(room.transform.position.x+7.2f-16f,room.transform.position.y+5.6f), 1f); //raycast left         
+            Collider2D HIT_LEFT = Physics2D.OverlapCircle(new Vector2(room.transform.position.x + 7.2f - 16f, room.transform.position.y + 5.6f), 1f); //raycast left         
 
-            Collider2D HIT_RIGHT = Physics2D.OverlapCircle(new Vector2(room.transform.position.x+7.2f+16f,room.transform.position.y+5.6f), 1f); //raycast left
+            Collider2D HIT_RIGHT = Physics2D.OverlapCircle(new Vector2(room.transform.position.x + 7.2f + 16f, room.transform.position.y + 5.6f), 1f); //raycast left
 
-            Collider2D HIT_UP = Physics2D.OverlapCircle(new Vector2(room.transform.position.x+7.2f,room.transform.position.y+5.6f+16f), 1f); //raycast left
+            Collider2D HIT_UP = Physics2D.OverlapCircle(new Vector2(room.transform.position.x + 7.2f, room.transform.position.y + 5.6f + 16f), 1f); //raycast left
 
-            Collider2D HIT_DOWN = Physics2D.OverlapCircle(new Vector2(room.transform.position.x+7.2f,room.transform.position.y+5.6f-16f), 1f); //raycast left
+            Collider2D HIT_DOWN = Physics2D.OverlapCircle(new Vector2(room.transform.position.x + 7.2f, room.transform.position.y + 5.6f - 16f), 1f); //raycast left
 
-            Debug.Log(room.name);
-
-            if(HIT_LEFT != null) //check directly left
+            if (HIT_LEFT != null) //check directly left
             {
                 //cool theres a room to the left
-                Debug.Log("wall detected: " + HIT_LEFT.gameObject);
-            }
-            else
+            } else
             {
-                if(room.GetComponent<Room>().DoorPlacements[1])
+                if (room.GetComponent<Room>().DoorPlacements [1])
                 {
-                    room.GetComponent<Room>().DoorTiles[1].gameObject.GetComponent<SpriteRenderer>().sprite = tileList[1]; //dorTiles[1] is the left door, tileList[1] is a wall tile.  
-                    room.GetComponent<Room>().DoorTiles[1].gameObject.GetComponent<BoxCollider2D>().enabled = true;
-                    room.GetComponent<Room>().DoorTiles[1].gameObject.layer = 9;
-                    room.GetComponent<Room>().DoorTiles[1].gameObject.GetComponent<Tile>().colliderType = 1;
-                    room.GetComponent<Room>().DoorPlacements[1] = false;
+                    room.GetComponent<Room>().DoorTiles [1].gameObject.GetComponent<SpriteRenderer>().sprite = tileList [1]; //dorTiles[1] is the left door, tileList[1] is a wall tile.  
+                    room.GetComponent<Room>().DoorTiles [1].gameObject.GetComponent<BoxCollider2D>().enabled = true;
+                    room.GetComponent<Room>().DoorTiles [1].gameObject.layer = 9;
+                    room.GetComponent<Room>().DoorTiles [1].gameObject.GetComponent<Tile>().colliderType = 1;
+                    room.GetComponent<Room>().DoorPlacements [1] = false;
                 }
             }
-            if(HIT_RIGHT != null) //check directly left
+            if (HIT_RIGHT != null) //check directly left
             {
                 //cool theres a room to the left
-                Debug.Log("wall detected: " + HIT_RIGHT.gameObject);
-            }
-            else
+            } else
             {
-                if(room.GetComponent<Room>().DoorPlacements[2])
+                if (room.GetComponent<Room>().DoorPlacements [2])
                 {
-                    room.GetComponent<Room>().DoorTiles[2].gameObject.GetComponent<SpriteRenderer>().sprite = tileList[1]; //dorTiles[1] is the left door, tileList[1] is a wall tile.  
-                    room.GetComponent<Room>().DoorTiles[2].gameObject.GetComponent<BoxCollider2D>().enabled = true;
-                    room.GetComponent<Room>().DoorTiles[2].gameObject.layer = 9;
-                    room.GetComponent<Room>().DoorTiles[2].gameObject.GetComponent<Tile>().colliderType = 1;
-                    room.GetComponent<Room>().DoorPlacements[2] = false;
+                    room.GetComponent<Room>().DoorTiles [2].gameObject.GetComponent<SpriteRenderer>().sprite = tileList [1]; //dorTiles[1] is the left door, tileList[1] is a wall tile.  
+                    room.GetComponent<Room>().DoorTiles [2].gameObject.GetComponent<BoxCollider2D>().enabled = true;
+                    room.GetComponent<Room>().DoorTiles [2].gameObject.layer = 9;
+                    room.GetComponent<Room>().DoorTiles [2].gameObject.GetComponent<Tile>().colliderType = 1;
+                    room.GetComponent<Room>().DoorPlacements [2] = false;
                 }
             }
-            if(HIT_UP != null) //check directly left
+            if (HIT_UP != null) //check directly left
             {
                 //cool theres a room to the left
-                Debug.Log("wall detected: " + HIT_UP.gameObject);
-            }
-            else
+            } else
             {
-                if(room.GetComponent<Room>().DoorPlacements[3])
+                if (room.GetComponent<Room>().DoorPlacements [3])
                 {
-                    room.GetComponent<Room>().DoorTiles[3].gameObject.GetComponent<SpriteRenderer>().sprite = tileList[1]; //dorTiles[1] is the left door, tileList[1] is a wall tile.  
-                    room.GetComponent<Room>().DoorTiles[3].gameObject.GetComponent<BoxCollider2D>().enabled = true;
-                    room.GetComponent<Room>().DoorTiles[3].gameObject.layer = 9;
-                    room.GetComponent<Room>().DoorTiles[3].gameObject.GetComponent<Tile>().colliderType = 1;
-                    room.GetComponent<Room>().DoorPlacements[3] = false;
+                    room.GetComponent<Room>().DoorTiles [3].gameObject.GetComponent<SpriteRenderer>().sprite = tileList [1]; //dorTiles[1] is the left door, tileList[1] is a wall tile.  
+                    room.GetComponent<Room>().DoorTiles [3].gameObject.GetComponent<BoxCollider2D>().enabled = true;
+                    room.GetComponent<Room>().DoorTiles [3].gameObject.layer = 9;
+                    room.GetComponent<Room>().DoorTiles [3].gameObject.GetComponent<Tile>().colliderType = 1;
+                    room.GetComponent<Room>().DoorPlacements [3] = false;
                 }
             }
-            if(HIT_DOWN != null) //check directly left
+            if (HIT_DOWN != null) //check directly left
             {
                 //cool theres a room to the left
-                Debug.Log("wall detected: " + HIT_DOWN.gameObject);
-            }
-            else
+            } else
             {
-                if(room.GetComponent<Room>().DoorPlacements[0])
+                if (room.GetComponent<Room>().DoorPlacements [0])
                 {
-                    room.GetComponent<Room>().DoorTiles[0].gameObject.GetComponent<SpriteRenderer>().sprite = tileList[1]; //dorTiles[1] is the left door, tileList[1] is a wall tile.  
-                    room.GetComponent<Room>().DoorTiles[0].gameObject.GetComponent<BoxCollider2D>().enabled = true;
-                    room.GetComponent<Room>().DoorTiles[0].gameObject.layer = 9;
-                    room.GetComponent<Room>().DoorTiles[0].gameObject.GetComponent<Tile>().colliderType = 1;
-                    room.GetComponent<Room>().DoorPlacements[0] = false;
+                    room.GetComponent<Room>().DoorTiles [0].gameObject.GetComponent<SpriteRenderer>().sprite = tileList [1]; //dorTiles[1] is the left door, tileList[1] is a wall tile.  
+                    room.GetComponent<Room>().DoorTiles [0].gameObject.GetComponent<BoxCollider2D>().enabled = true;
+                    room.GetComponent<Room>().DoorTiles [0].gameObject.layer = 9;
+                    room.GetComponent<Room>().DoorTiles [0].gameObject.GetComponent<Tile>().colliderType = 1;
+                    room.GetComponent<Room>().DoorPlacements [0] = false;
                 }
             }
 
-            if(room.GetComponent<Room>().isAnyDoors() == false)
+            if (room.GetComponent<Room>().isAnyDoors() == false)
             {
                 roomsToRemove.Add(room);
                 Destroy(room);
             }
         }
 
-        foreach(GameObject room in roomsToRemove)
+        foreach (GameObject room in roomsToRemove)
             roomLayout.Remove(room);
     }
 
@@ -261,20 +286,19 @@ public class LevelPlacer : MonoBehaviour
                 roomLayout.Add(newRoom);
                 newRoom.name = "Room (" + x + ", " + y + ")";
 
-                if(Random.Range(1,30) <= 15)
+                if (Random.Range(1, 30) <= 15)
                 {
                     beginTilePlacement(worldSpawnList [grid [x, y]], newRoom);
-                    newRoom.GetComponent<Room>().DoorPlacements[0] = true;
-                    newRoom.GetComponent<Room>().DoorPlacements[1] = true;
-                    newRoom.GetComponent<Room>().DoorPlacements[2] = true;
-                    newRoom.GetComponent<Room>().DoorPlacements[3] = true;
-                }
-                else
+                    newRoom.GetComponent<Room>().DoorPlacements [0] = true;
+                    newRoom.GetComponent<Room>().DoorPlacements [1] = true;
+                    newRoom.GetComponent<Room>().DoorPlacements [2] = true;
+                    newRoom.GetComponent<Room>().DoorPlacements [3] = true;
+                } else
                 {
-                    newRoom.GetComponent<Room>().DoorPlacements[0] = false;
-                    newRoom.GetComponent<Room>().DoorPlacements[1] = false;
-                    newRoom.GetComponent<Room>().DoorPlacements[2] = false;
-                    newRoom.GetComponent<Room>().DoorPlacements[3] = false;
+                    newRoom.GetComponent<Room>().DoorPlacements [0] = false;
+                    newRoom.GetComponent<Room>().DoorPlacements [1] = false;
+                    newRoom.GetComponent<Room>().DoorPlacements [2] = false;
+                    newRoom.GetComponent<Room>().DoorPlacements [3] = false;
                     newRoom.GetComponent<BoxCollider2D>().enabled = false;
                 }
             }   
@@ -285,8 +309,6 @@ public class LevelPlacer : MonoBehaviour
     {
         
         Texture2D t = sp.texture;
-            
-        Debug.Log("Size of texture: " + t.width + ", " + t.height);
             
         float sx = sp.rect.x;
         float sy = sp.rect.y;
@@ -330,7 +352,7 @@ public class LevelPlacer : MonoBehaviour
                         }
                         if (c == 3)
                         { //DOOR
-                            roomParent.GetComponent<Room>().DoorTiles[doorCount] = newTile;
+                            roomParent.GetComponent<Room>().DoorTiles [doorCount] = newTile;
                             newTile.GetComponent<Tile>().colliderType = 0;
                             newTile.gameObject.layer = 8;
                             newTile.GetComponent<BoxCollider2D>().enabled = false;

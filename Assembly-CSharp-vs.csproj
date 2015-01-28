@@ -39,10 +39,10 @@
 	<Reference Include="System.Core" />
 	<Reference Include="System.Xml.Linq" />
 	<Reference Include="UnityEngine">
-	  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
+	  <HintPath>F:/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
 	</Reference>
 	<Reference Include="UnityEditor">
-	  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
+	  <HintPath>F:/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
 	</Reference>
   </ItemGroup>
   <ItemGroup>
@@ -53,6 +53,10 @@
      <Compile Include="Assets\Engine\Camera\Target.cs" />
      <Compile Include="Assets\Engine\IO\IO.cs" />
      <Compile Include="Assets\Engine\IO\Input.cs" />
+     <Compile Include="Assets\Engine\Item\Inventory.cs" />
+     <Compile Include="Assets\Engine\Item\InventoryItem.cs" />
+     <Compile Include="Assets\Engine\Item\Namer.cs" />
+     <Compile Include="Assets\Engine\Item\StatsPackage.cs" />
      <Compile Include="Assets\Engine\Level\DetectRoomChange.cs" />
      <Compile Include="Assets\Engine\Level\LevelPlacer.cs" />
      <Compile Include="Assets\Engine\Level\LevelRevealer.cs" />
@@ -64,7 +68,7 @@
      <Compile Include="Assets\Engine\Object\Item.cs" />
      <None Include="Assets\Engine\Level\IDLIST.txt" />
  <Reference Include="UnityEngine.UI">
- <HintPath>C:/Program Files (x86)/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/4.6.1/UnityEngine.UI.dll</HintPath>
+ <HintPath>F:/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/4.6.1/UnityEngine.UI.dll</HintPath>
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

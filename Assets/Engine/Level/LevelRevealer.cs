@@ -3,7 +3,6 @@ using System.Collections;
 
 public class LevelRevealer : MonoBehaviour
 {
-    public float MaskDistance = 10f;
     private GameObject[] gameObjectList;
 
     // Use this for initialization
@@ -11,7 +10,7 @@ public class LevelRevealer : MonoBehaviour
     {
         //Runs after level placer, so this will ignore any new placed gameobjects. Thats OK
         gameObjectList = GameObject.FindGameObjectsWithTag("Tile");
-        foreach(GameObject obj in gameObjectList)
+        foreach (GameObject obj in gameObjectList)
             obj.SetActive(false);
     }
 
