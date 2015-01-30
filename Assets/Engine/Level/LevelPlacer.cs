@@ -6,12 +6,14 @@ using System.Linq;
 public class LevelPlacer : MonoBehaviour
 {
     public GameObject player;
+    public GameObject tile;
+    public GameObject room;
+    public GameObject Item;
     public Sprite[] tileList;
     public Sprite[] worldSpawnList;
     public Color[] colorList;
-    public GameObject tile;
-    public GameObject room;
     public List<GameObject> mainBlob = new List<GameObject>();
+    public List<GameObject> itemList = new List<GameObject>();
     public byte DoorColorElement = 3;
     [SerializeField]
     private string
@@ -22,6 +24,8 @@ public class LevelPlacer : MonoBehaviour
     [SerializeField]
     private GameObject[]
         roomLayoutFinalized;
+    [SerializeField]
+    private int GeneratorIterations = 0;
     
     public int WorldWidth = 3;
     public int WorldHeight = 3;
@@ -29,6 +33,9 @@ public class LevelPlacer : MonoBehaviour
     // Use this for initialization
     void Start()
     {    
+        GameObject _player = Instantiate(player, new Vector3(-1000f, -1000f), player.transform.rotation) as GameObject;
+        player = _player; //dirty
+
         Debug.Log("Level generation started!");
         System.Diagnostics.Stopwatch stop = new System.Diagnostics.Stopwatch();
         stop.Start();
@@ -50,29 +57,64 @@ public class LevelPlacer : MonoBehaviour
         int iterations = 0;
         while (iterations < maxIterations)
         {
+            this.GeneratorIterations++;
+
             //steps
             getLevelRoomPlacement();
             isCorrectPlacements();
             setSpawnRoom();
             getMainBlob();
             destroyNonBlob(); 
+            spawnItems();
             //we have a world
             
             roomLayoutFinalized = roomLayout.ToArray();
             
             if (roomLayoutFinalized.Length >= minSize)
             if (roomLayoutFinalized.Length <= maxSize)
-                break;
+                return;
                 
             foreach (GameObject r in roomLayoutFinalized)
                 Destroy(r);  
-              
+
+            foreach(GameObject i in itemList)
+                Destroy(i);
+
+            itemList.Clear();
             roomLayout.Clear();
             mainBlob.Clear();
             roomLayoutFinalized = null;
         }
         
         return;
+    }
+
+    private void spawnItems()
+    {
+        int c = 0;
+        foreach(GameObject r in roomLayout)
+        {
+            c++;
+            foreach(Transform t in r.transform)
+            {
+                if(t.GetComponent<Tile>())
+                {
+                    if(t.GetComponent<Tile>().tildID == 0)
+                    {
+                        if(Random.Range(1, 201) == 1)
+                        {
+                            GameObject item = Instantiate(Item, t.transform.position, gameObject.transform.rotation) as GameObject;
+                            item.name = "Item i: " + GeneratorIterations + " for " + r.gameObject.name + " tile pos: " + t.position;
+                            item.transform.parent = r.transform;
+                            item.transform.localPosition = new Vector3(t.localPosition.x + .8f, t.localPosition.y - .8f);
+                            itemList.Add(item);
+                        }
+                    }
+                }
+            }
+        }
+
+        Debug.Log("c is " + c);
     }
 
     private void destroyNonBlob()
@@ -359,8 +401,7 @@ public class LevelPlacer : MonoBehaviour
                             doorCount++;
                         }
                         #endregion
-                    }
-                        
+                    }                       
                     c++;
                 }
             }

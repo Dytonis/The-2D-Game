@@ -14,17 +14,17 @@ public class StatsPackage
     
     #region WearableStats
     public float ARMOR;
-    public string TYPE;
     #endregion
     
     #region AllStats
     public string ENCHANT;
     public string NAME;
     public string LEVEL;
+    public string TYPE;
     #endregion
 
     public StatsPackage()
     {
-    
+        
     }
 }
