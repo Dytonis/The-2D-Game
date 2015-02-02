@@ -1,11 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEditor;
 
 public class Input : MonoBehaviour 
 {
 
 	public EntityMovement move;
 	public float speed;
+
+    public Component Affector;
 
     public enum DriveType
     {
@@ -18,7 +21,7 @@ public class Input : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-	
+
 	}
 	
 	// Update is called once per frame
@@ -45,6 +48,12 @@ public class Input : MonoBehaviour
     		{
     			move.MoveCommand(IO.DirectionTypes.RIGHT, speed);
     		}
+
+            if(UnityEngine.Input.GetKeyDown(KeyCode.E))
+            {
+                if(Affector.GetType() == typeof(ItemPickerHandler))
+                    Affector.SendMessage("PickupClosestItemIfInRange");
+            }
         }
 	}
 

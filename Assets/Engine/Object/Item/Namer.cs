@@ -61,8 +61,9 @@ public class Namer
     {
         StatsPackage package = new StatsPackage();
 
-        package.NAME = getName(level);
-        package.TYPE = getType();
+        package.TYPE = getType();          //name uses type, so we must run type first
+        package.NAME = getName(level) + " " + package.TYPE.ToString();
+        package.DAMAGE = getDamage(level, package.TYPE.ToString());
 
         return package;
     }

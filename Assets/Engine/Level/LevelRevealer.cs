@@ -9,18 +9,9 @@ public class LevelRevealer : MonoBehaviour
     void Start()
     {
         //Runs after level placer, so this will ignore any new placed gameobjects. Thats OK
-        gameObjectList = GameObject.FindGameObjectsWithTag("Tile");
+        gameObjectList = GameObject.FindGameObjectsWithTag("Room");
         foreach (GameObject obj in gameObjectList)
-            obj.SetActive(false);
-    }
-
-    void Update()
-    {
-        /*foreach (GameObject go in gameObjectList)
-        {
-            if (Vector3.Distance(gameObject.transform.position, go.transform.position) <= MaskDistance)
-            if (go.GetComponent<SpriteRenderer>())
-                    go.SetActive(true);
-        }*/
+            foreach (Transform t in obj.transform)
+                t.gameObject.SetActive(false);
     }
 }
