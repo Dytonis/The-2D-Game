@@ -1,19 +1,20 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Engine\Object\Item\Namer.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Engine\Object\Item\Item.cs">
     <Files>
-      <File FileName="Assets\Engine\Level\LevelPlacer.cs" Line="109" Column="122" />
+      <File FileName="Assets\Engine\Level\LevelPlacer.cs" Line="255" Column="91" />
       <File FileName="Assets\Engine\Level\Tile.cs" Line="1" Column="1" />
       <File FileName="Assets\Engine\Level\LevelRevealer.cs" Line="1" Column="1" />
       <File FileName="Assets\Engine\Level\DetectRoomChange.cs" Line="1" Column="1" />
-      <File FileName="Assets\Engine\IO\Input.cs" Line="55" Column="69" />
-      <File FileName="Assets\Engine\Object\Item\ItemRanger.cs" Line="29" Column="35" />
+      <File FileName="Assets\Engine\IO\Input.cs" Line="1" Column="1" />
+      <File FileName="Assets\Engine\Object\Item\ItemRanger.cs" Line="34" Column="27" />
       <File FileName="Assets\Engine\Object\Item\ItemPickerHandler.cs" Line="24" Column="1" />
-      <File FileName="Assets\Engine\Object\Item\Inventory.cs" Line="37" Column="1" />
-      <File FileName="Assets\Engine\Object\Item\InventoryItem.cs" Line="45" Column="27" />
-      <File FileName="Assets\Engine\Object\Item\StatsPackage.cs" Line="45" Column="14" />
-      <File FileName="Assets\Engine\Object\Item\Namer.cs" Line="66" Column="66" />
-      <File FileName="Assets\Engine\Object\Item\Item.cs" Line="1" Column="1" />
+      <File FileName="Assets\Engine\Object\Item\Inventory.cs" Line="16" Column="44" />
+      <File FileName="Assets\Engine\Object\Item\InventoryItem.cs" Line="20" Column="29" />
+      <File FileName="Assets\Engine\Object\Item\StatsPackage.cs" Line="19" Column="5" />
+      <File FileName="Assets\Engine\Object\Item\Namer.cs" Line="132" Column="28" />
+      <File FileName="Assets\Engine\Object\Item\Item.cs" Line="15" Column="13" />
+      <File FileName="Assets\Engine\IO\MessagePopupBox.cs" Line="11" Column="15" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

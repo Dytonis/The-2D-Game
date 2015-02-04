@@ -53,6 +53,7 @@
      <Compile Include="Assets\Engine\Camera\Target.cs" />
      <Compile Include="Assets\Engine\IO\IO.cs" />
      <Compile Include="Assets\Engine\IO\Input.cs" />
+     <Compile Include="Assets\Engine\IO\MessagePopupBox.cs" />
      <Compile Include="Assets\Engine\Level\DetectRoomChange.cs" />
      <Compile Include="Assets\Engine\Level\LevelPlacer.cs" />
      <Compile Include="Assets\Engine\Level\LevelRevealer.cs" />

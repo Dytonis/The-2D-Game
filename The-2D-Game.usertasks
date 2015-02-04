@@ -1,5 +1,5 @@
 <ListOfTask>
   <Task file="" description="Add ability to detect if item is in range" completed="True" />
-  <Task file="" description="Once in range press key to add that item to your inventory" />
+  <Task file="" description="Once in range press key to add that item to your inventory" completed="True" />
   <Task file="" description="Add inventory UI" />
 </ListOfTask>

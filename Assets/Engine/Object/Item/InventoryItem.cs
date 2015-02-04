@@ -16,7 +16,8 @@ public class InventoryItem : ScriptableObject
     public bool CONSUMABLE;
     public string ENCHANT;
     public string NAME;
-    public string LEVEL;
+    public int LEVEL;
+    public Color RARITYCOLOR;
     public string TYPE;
     public Sprite SPRITE;
     #endregion
@@ -37,6 +38,7 @@ public class InventoryItem : ScriptableObject
         LEVEL = stats.LEVEL;
         TYPE = stats.TYPE;
         SPRITE = stats.SPRITE;
+        RARITYCOLOR = stats.RARITYCOLOR;
     }
 
     public InventoryItem Clone()

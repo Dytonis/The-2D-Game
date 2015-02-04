@@ -17,9 +17,10 @@ public class StatsPackage
     #endregion
     
     #region AllStats
+    public int LEVEL;
+    public Color RARITYCOLOR;
     public string ENCHANT;
     public string NAME;
-    public string LEVEL;
     public string TYPE;
     public Sprite SPRITE;
     #endregion

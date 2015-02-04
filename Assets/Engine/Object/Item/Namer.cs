@@ -11,7 +11,8 @@ public class Namer
             "Horrifying",
             "Nasty",
             "Awful",
-            "Trash" 
+            "Trash",
+            "Stupid"
         },
         new List<string>() 
         { 
@@ -19,7 +20,8 @@ public class Namer
             "Average",
             "Not-So Horrible",
             "Acceptable",
-            "Not-Special"
+            "Not-Special",
+            "\'Meh\'"
         },
         new List<string>() 
         { 
@@ -27,7 +29,8 @@ public class Namer
             "Quality",
             "Good",
             "Nice",
-            "Shiney"
+            "Shiney",
+            "Cool"
         },
         new List<string>() 
         { 
@@ -35,7 +38,8 @@ public class Namer
             "Well-Made",
             "Very Good",
             "Keen",
-            "Sharp" 
+            "Sharp",
+            "Impressive"
         },
         new List<string>() 
         { 
@@ -43,8 +47,18 @@ public class Namer
             "Amazing",
             "Unbreakable",
             "Fearful",
-            "God-Like" 
+            "God-Like",
+            "Flawless"
         }
+    };
+
+    private static List<Color> LevelColors = new List<Color>()
+    {
+        new Color(0.1f, 0.1f, 0.1f),
+        new Color(1f, 1f, 1f),
+        new Color(0f, 1f, 0f),
+        new Color(0f, 0f, 1f),
+        new Color(1f, 0f, 1f)
     };
 
     public static List<string> ItemTypes = new List<string>()
@@ -57,13 +71,22 @@ public class Namer
         "Head"
     };
 
+    /// <summary>
+    /// Returns a random stat tree for a given level.
+    /// </summary>
+    /// <returns>The stats.</returns>
+    /// <param name="level">Level. Will be modified +- 1 by random.</param>
     public static StatsPackage getStats(int level)
     {
+        int newLevel = Random.Range((level == 1) ? 1 : level-1, (level == 5) ? 6 : level+2);
+
         StatsPackage package = new StatsPackage();
 
         package.TYPE = getType();          //name uses type, so we must run type first
-        package.NAME = getName(level) + " " + package.TYPE.ToString();
-        package.DAMAGE = getDamage(level, package.TYPE.ToString());
+        package.RARITYCOLOR = LevelColors[newLevel-1];
+        package.NAME = getName(newLevel) + " " + package.TYPE.ToString();
+        package.DAMAGE = getDamage(newLevel, package.TYPE.ToString());
+        package.LEVEL = newLevel;
 
         return package;
     }
@@ -77,7 +100,7 @@ public class Namer
 
     private static string getName(int level)
     {
-        int pick = Random.Range(0, 5);
+        int pick = Random.Range(0, 6);
 
         return ItemNames[level-1][pick];
     }
@@ -88,25 +111,25 @@ public class Namer
         {
             case "Sword":
 
-                return 5f+(level * 4.5f)+Random.Range(-5*level, 5*level);
+                return 5f+(level * 4.5f)+Random.Range(-5f * level, 5f * level).Truncate(1);
 
             case "Dagger":
 
-                return 2f+(level * 4.5f)+Random.Range(-5*level, 5*level);
+                return 2f+(level * 4.5f)+Random.Range(-5.1f * level, 5.9f * level).Truncate(1);
 
             case "Bow":
 
-                return 40f+(level*5f)+Random.Range(-5*level, 5*level);
+                return 40f+(level * 5f)+Random.Range(-5.1f * level, 5.9f * level).Truncate(1);
 
             case "Magic":
 
-                return 25+(level*7.5f)+Random.Range(-5*level, 5*level);
+                return 25+(level * 7.5f)+Random.Range(-5.1f * level, 5.9f * level).Truncate(1);
 
             case "Chest":
 
                 return 0f;
 
-            case "Head":
+            case "Headpiece":
 
                 return 0f;
 
@@ -114,5 +137,15 @@ public class Namer
 
                 return 0f;
         }
+    }
+}
+
+public static class NamerHelper
+{
+    public static float Truncate(this float value, int digits)
+    {
+        double mult = System.Math.Pow(10.0, digits);
+        double result = System.Math.Truncate( mult * value ) / mult;
+        return (float) result;
     }
 }

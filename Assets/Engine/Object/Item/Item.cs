@@ -5,10 +5,15 @@ public class Item : MonoBehaviour
 {
     public StatsPackage stats;
     public Sprite[] ItemSpriteList;
-    
+
+    public float cooldownRemaining = 0.0f;
+
     public void Activate()
     {
-        
+        if(cooldownRemaining <= 0.0f)
+        {
+
+        }
     }
     
     public void Awake()
@@ -20,6 +25,9 @@ public class Item : MonoBehaviour
         
         if(stats.TYPE == "Sword")
             GetComponent<SpriteRenderer>().sprite = ItemSpriteList[1];
+
+        if(stats.TYPE == "Magic")
+            GetComponent<SpriteRenderer>().sprite = ItemSpriteList[2];
 
     }
 }
